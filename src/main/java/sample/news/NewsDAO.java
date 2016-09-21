@@ -1,0 +1,71 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package sample.news;
+
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import sample.news.News;
+
+/**
+ *
+ * @author quangphuong
+ */
+@Component
+public class NewsDAO {
+    @PersistenceContext
+    EntityManager em;
+
+    @Transactional
+    public boolean checkExist(int id) {
+        return em.find(News.class, id) != null;
+    }
+
+    @Transactional
+    public void persist(Object object) {
+        em.persist(object);
+
+    }
+
+    @Transactional
+    public News getNewsById(Integer id) {
+        try {
+            News news = (News) em.find(News.class, id);
+            return news;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+    
+    @Transactional
+    public List<News> getAllNews() {
+        Query query = em.createNamedQuery("News.findAll");
+        List<News> list = query.getResultList();
+        return list;
+    }
+
+    @Transactional
+    public void delete(int id) {
+        News news = (News) em.find(News.class, id);
+        em.remove(news);
+    }
+
+    @Transactional
+    public void update(News news) {
+        News std = (News) em.find(News.class, news.getNewsId());
+        std.setTitle(news.getTitle());
+        std.setSummary(news.getSummary());
+        std.setCreatedDate(news.getCreatedDate());
+        std.setContents(news.getContents());
+        std.setCategoryId(news.getCategoryId());
+        std.setStaffId(news.getStaffId());
+        em.merge(std);
+    }
+}

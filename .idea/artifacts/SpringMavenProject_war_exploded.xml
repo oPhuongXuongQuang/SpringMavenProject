@@ -1,0 +1,45 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="SpringMavenProject:war exploded">
+    <output-path>$PROJECT_DIR$/target/SpringMavenProject-1.0-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="SpringMavenProject" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: javax.persistence:persistence-api:1.0.2" />
+          <element id="library" level="project" name="Maven: org.eclipse.persistence:javax.persistence:2.1.1" />
+          <element id="library" level="project" name="Maven: org.eclipse.persistence:eclipselink:2.5.2" />
+          <element id="library" level="project" name="Maven: org.eclipse.persistence:commonj.sdo:2.1.1" />
+          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final" />
+          <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.7" />
+          <element id="library" level="project" name="Maven: cglib:cglib:2.2" />
+          <element id="library" level="project" name="Maven: asm:asm:3.1" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.7.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-orm:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.7.1" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:4.0.1.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:4.0.1.RELEASE" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/SpringMavenProject-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="SpringMavenProject/web/Web" />
+    </root>
+  </artifact>
+</component>
