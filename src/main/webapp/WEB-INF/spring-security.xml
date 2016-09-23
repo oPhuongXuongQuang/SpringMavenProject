@@ -7,7 +7,8 @@
 	http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http auto-config="true">
-        <intercept-url pattern="/" access="hasRole('ROLE_ADMIN')" />
+        <!--<intercept-url pattern="/" access="hasRole('ROLE_ADMIN')" />-->
+        <intercept-url pattern="/" access="permitAll" />
         <form-login
                 login-page="/login"
                 default-target-url="/"
@@ -20,8 +21,13 @@
         <access-denied-handler error-page="/403"/>
 
         <!-- enable csrf protection -->
-        <csrf/>
+        <csrf token-repository-ref="csrfTokenRepository" />
+
     </http>
+
+    <beans:bean id="csrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+        <beans:property name="headerName" value="X-XSRF-TOKEN" />
+    </beans:bean>
 
     <beans:bean id="customUserService" class="sample.service.CustomUserService" />
 

@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import sample.category.Category;
 
 /**
  *
@@ -65,7 +66,25 @@ public class ProductDAO {
         std.setPrice(product.getPrice());
         std.setProductId(product.getProductId());
         std.setCategoryId(product.getCategoryId());
-        em.merge(std);
+//        em.merge(std);
+        updateCategory(product.getCategoryId().getCategoryId());
+    }
+
+    @Transactional
+    public List<Product> getProductByCategoryId(Integer categoryId) {
+        Query query = em.createNamedQuery("Product.findByCategoryId");
+        query.setParameter("categoryId", categoryId);
+        List<Product> list = query.getResultList();
+        return list;
+    }
+
+    @Transactional
+    public void updateCategory(Integer categoryId) {
+        Category cate = (Category) em.find(Category.class, categoryId);
+        List<Product> products = getProductByCategoryId(categoryId);
+        cate.setProductList(products);
+        em.merge(cate);
+        em.flush();
     }
     
 }

@@ -9,9 +9,9 @@
         <class>sample.category.Category</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
-            <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://myserversecn9.database.windows.net:1433;databaseName=QUANGPX"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:jtds:sqlserver://myserversecn9.database.windows.net:1433/QUANGPX"/>
             <property name="javax.persistence.jdbc.user" value="secn999@myserversecn9"/>
-            <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+            <property name="javax.persistence.jdbc.driver" value="net.sourceforge.jtds.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.password" value="Huesoft?123"/>
         </properties>
     </persistence-unit>

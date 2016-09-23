@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import sample.product.ProductDAO;
 import sample.student.StudentDAO;
 import sample.teacher.TeacherDAO;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,9 +47,23 @@ public class HomeController {
     private ProductDAO productDAO;
     
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(Model model) {
+    public String home(Model model, HttpServletRequest request, HttpServletResponse response) {
         model.addAttribute("USER", getPrincipal());
+        CsrfToken csrf = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        if (csrf != null) {
+            if (csrf.getToken() != "") {
+                System.out.println("---------CSRF: " + csrf.getToken());
+                Cookie cookie = new Cookie("XSRF-TOKEN", csrf.getToken());
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
+        }
         return "index";
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    public String signup() {
+        return "signup";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -61,15 +77,23 @@ public class HomeController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-                              @RequestParam(value = "logout", required = false) String logout) {
+                              @RequestParam(value = "logout", required = false) String logout,
+                              HttpServletRequest request, HttpServletResponse response) {
         ModelAndView model = new ModelAndView();
+        model.setViewName("login");
         if (error != null) {
             model.addObject("error", "Invalid username or password!");
         }
         if (logout != null) {
             model.addObject("logout", "You have logged out successfully!");
+            Cookie[] cookies = request.getCookies();
+            for (Cookie cookie: cookies) {
+                cookie.setValue("");
+                cookie.setMaxAge(0);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
         }
-        model.setViewName("login");
         return model;
     }
 

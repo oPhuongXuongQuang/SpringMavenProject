@@ -7,12 +7,15 @@ package sample.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +35,7 @@ import sample.news.NewsDAO;
  */
 @RestController
 public class Ajax2Controller {
+    private final String[] newsColumn = {"newsId" , "title", "summary", "contents", "createdDate", "categoryId", "staffId"};
     @Autowired
     private StaffDAO staffDAO;
     @Autowired
@@ -42,8 +46,33 @@ public class Ajax2Controller {
     private StaffService staffService;
     
     @RequestMapping(value = "/getNews", method = RequestMethod.GET, produces = "application/json")
-    public @ResponseBody ResponseEntity news() {
-        List<News> list = newsDAO.getAllNews();
+    public @ResponseBody ResponseEntity news(HttpServletRequest request) {
+        System.out.println("start: " + request.getParameter("start"));
+        System.out.println("length: " + request.getParameter("length"));
+        System.out.println("search: " + request.getParameter("search[value]"));
+        System.out.println("sort: " + request.getParameter("order[0][dir]"));
+        System.out.println("column: " + request.getParameter("order[0][column]"));
+        String length = request.getParameter("length");
+        String searchVal = request.getParameter("search[value]");
+        String start = request.getParameter("start");
+        String sort = request.getParameter("order[0][dir]");
+        String column = request.getParameter("order[0][column]");
+        List<News> list;
+//        Enumeration<String> parameterNames = request.getParameterNames();
+//        while (parameterNames.hasMoreElements()) {
+//            String paramName = parameterNames.nextElement();
+//            System.out.println(paramName);
+//            String[] paramValues = request.getParameterValues(paramName);
+//                for (int i = 0; i < paramValues.length; i++) {
+//                    System.out.println("--- " + paramValues[i]);
+//                }
+//            }
+
+            if (Integer.parseInt(length) == -1) {
+            list = newsDAO.getAllNewsBy(searchVal, Integer.parseInt(column), sort);
+        } else {
+            list = newsDAO.getNewsBy(Integer.parseInt(start), Integer.parseInt(length), searchVal, Integer.parseInt(column), sort);
+        }
         return new ResponseEntity(list, null, HttpStatus.OK);
     }
     

@@ -19,6 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import sample.product.Product;
 import sample.news.News;
 
@@ -48,7 +51,7 @@ public class Category implements Serializable {
     @Column(name = "name", nullable = false, length = 45)
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryId")
-    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
     private List<Product> productList;
 
     public Category() {

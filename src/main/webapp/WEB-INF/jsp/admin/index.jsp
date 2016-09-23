@@ -7,6 +7,7 @@
 <html class="no-js" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="${ _csrf.token }">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <meta name="description" content="admin-themes-lab">
     <meta name="author" content="themes-lab">

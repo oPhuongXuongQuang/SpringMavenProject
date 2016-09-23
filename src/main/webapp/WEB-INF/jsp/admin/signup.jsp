@@ -1,14 +1,13 @@
 <%--
   Created by IntelliJ IDEA.
   User: quangphuong
-  Date: 9/20/16
-  Time: 1:45 PM
+  Date: 9/21/16
+  Time: 1:02 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <meta charset="utf-8">
     <title>Themes Lab - Creative Laborator</title>
@@ -18,58 +17,62 @@
     <link rel="shortcut icon" href="global/images/favicon.png">
     <link href="global/css/style.css" rel="stylesheet">
     <link href="global/css/ui.css" rel="stylesheet">
+    <link href="global/plugins/icheck/skins/all.css" rel="stylesheet"/>
     <link href="global/plugins/bootstrap-loading/lada.min.css" rel="stylesheet">
 </head>
-<body class="account separate-inputs" data-page="login">
+<body class="sidebar-condensed account separate-inputs boxed" data-page="signup">
 <!-- BEGIN LOGIN BOX -->
 <div class="container" id="login-block">
     <div class="row">
-        <div class="col-sm-6 col-md-4 col-md-offset-4">
+        <div class="col-sm-6 col-md-6 col-md-offset-3">
             <div class="account-wall">
                 <i class="user-img icons-faces-users-03"></i>
-                <c:if test="${not empty error}">
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Opppps!</strong> You have entered incorrect username or password. Please try again.
+                <form class="form-signup" action="dashboard.html" role="form">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="append-icon">
+                                <input type="text" name="firstname" id="firstname" class="form-control form-white firstname" placeholder="First Name" required autofocus>
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="append-icon">
+                                <input type="text" name="lastname" id="lastname" class="form-control form-white lastname" placeholder="Last Name" required>
+                                <i class="icon-user"></i>
+                            </div>
+                        </div>
                     </div>
-                </c:if>
-                <c:if test="${not empty logout}">
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            ${logout}
-                    </div>
-                </c:if>
-                <form class="form-signin" name='loginForm' role="form" th:action="@{/login}" method='POST'>
                     <div class="append-icon">
-                        <input type="text" name="username" class="form-control form-white username" placeholder="Username" required>
-                        <i class="icon-user"></i>
+                        <input type="email" name="email" id="email" class="form-control form-white email" placeholder="Email" required>
+                        <i class="icon-envelope"></i>
                     </div>
-                    <div class="append-icon m-b-20">
-                        <input type="password" name="password" class="form-control form-white password" placeholder="Password" required>
+                    <div class="append-icon">
+                        <input type="password" name="password" id="password" class="form-control form-white password" placeholder="Password" required>
                         <i class="icon-lock"></i>
                     </div>
-                    <input type="submit" name="submit" id="submit-form" class="btn btn-lg btn-danger btn-block ladda-button" data-style="expand-left" value="Sign In"/>
+                    <div class="append-icon m-b-20">
+                        <input type="password" name="password" id="password2" class="form-control form-white password2" placeholder="Repeat Password" required>
+                        <i class="icon-lock"></i>
+                    </div>
+                    <div class="terms option-group">
+                        <label  for="terms" class="m-t-10">
+                            <input type="checkbox" name="terms" id="terms" data-checkbox="icheckbox_square-blue" required/>
+                            I agree with terms and conditions
+                        </label>
+                    </div>
+                    <button type="submit" id="submit-form" class="btn btn-lg btn-dark m-t-20" data-style="expand-left">Register</button>
                     <div class="social-btn">
-                        <button type="button" class="btn-fb btn btn-lg btn-block btn-primary"><i class="icons-socialmedia-08 pull-left"></i>Connect with Facebook</button>
-                        <button type="button" class="btn btn-lg btn-block btn-blue"><i class="icon-social-twitter pull-left"></i>Login with Twitter</button>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-lg btn-block btn-primary"><i class="fa fa-facebook pull-left"></i>Sign In with Facebook</button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-lg btn-block btn-danger"><i class="fa fa-google pull-left"></i>Sign In with Google</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="clearfix">
-                        <p class="pull-left m-t-20"><a id="password" href="#">Forgot password?</a></p>
-                        <p class="pull-right m-t-20"><a href="/signup">New here? Sign up</a></p>
-                    </div>
-
-                    <input type="hidden" name="${_csrf.parameterName}"
-                           value="${_csrf.token}" />
-                </form>
-                <form class="form-password" role="form">
-                    <div class="append-icon m-b-20">
-                        <input type="password" name="password" class="form-control form-white password" placeholder="Password" required>
-                        <i class="icon-lock"></i>
-                    </div>
-                    <button type="submit" id="submit-password" class="btn btn-lg btn-danger btn-block ladda-button" data-style="expand-left">Send Password Reset Link</button>
-                    <div class="clearfix">
-                        <p class="pull-left m-t-20"><a id="login" href="#">Already got an account? Sign In</a></p>
-                        <p class="pull-right m-t-20"><a href="/signup">New here? Sign up</a></p>
+                        <p class="pull-right m-t-20"><a href="user-login-v1.html">Already have an account? Sign In</a></p>
                     </div>
                 </form>
             </div>
@@ -100,7 +103,7 @@
                         <label class="col-xs-8 control-label">Boxed Form</label>
                         <div class="col-xs-4">
                             <label class="switch m-r-20">
-                                <input id="boxed-cb" type="checkbox" class="switch-input">
+                                <input id="boxed-cb" type="checkbox" class="switch-input" checked>
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -133,10 +136,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="col-xs-8 control-label">Separated Inputs</label>
+                        <label class="col-xs-8 control-label">Terms Checkbox</label>
                         <div class="col-xs-4">
                             <label class="switch m-r-20">
-                                <input id="input-cb" type="checkbox" class="switch-input">
+                                <input id="terms-cb" type="checkbox" class="switch-input" checked>
                                 <span class="switch-label" data-on="On" data-off="Off"></span>
                                 <span class="switch-handle"></span>
                             </label>
@@ -158,14 +161,19 @@
             </div>
         </form>
     </div>
-
 </div>
+<!-- END LOCKSCREEN BOX -->
 <script src="global/plugins/jquery/jquery-1.11.1.min.js"></script>
 <script src="global/plugins/jquery/jquery-migrate-1.2.1.min.js"></script>
 <script src="global/plugins/gsap/main-gsap.min.js"></script>
 <script src="global/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="global/plugins/icheck/icheck.min.js"></script>
 <script src="global/plugins/backstretch/backstretch.min.js"></script>
 <script src="global/plugins/bootstrap-loading/lada.min.js"></script>
+<script src="global/plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="global/plugins/jquery-validation/additional-methods.min.js"></script>
+<script src="global/js/plugins.js"></script>
 <script src="global/js/pages/login-v1.js"></script>
+<script src="admin/layout2/js/layout.js"></script>
 </body>
 </html>

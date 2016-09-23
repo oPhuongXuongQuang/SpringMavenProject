@@ -87,11 +87,12 @@ angular.module('newApp')
 
               var oTable = $('#table-editable').dataTable({
                   "bDestroy": true,
+                  "searching" : true,
                   "aLengthMenu": [
                       [10, 15, 20, -1],
                       [10, 15, 20, "All"] // change per page values here
                   ],
-                  "sDom": "<'row'<'col-md-6 filter-left'l><'col-md-6'T>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+                  // "sDom": "<'row'<'col-md-6 filter-left'l><'col-md-6'T>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
                   "ajax" : {
                       "url": "./getProduct",
                       "dataSrc": ""
@@ -123,30 +124,30 @@ angular.module('newApp')
                           //     return data;
                           // }
                       }
-                  ],
-                  "oTableTools": {
-                      "sSwfPath": "global/plugins/datatables/swf/copy_csv_xls_pdf.swf",
-                      "aButtons": [
-                          {
-                              "sExtends": "pdf",
-                              "mColumns": [0, 1, 2, 3],
-                              "sPdfOrientation": "landscape"
-                          },
-                          {
-                              "sExtends": "print",
-                              "mColumns": [0, 1, 2, 3],
-                              "sPdfOrientation": "landscape"
-                          }, {
-                              "sExtends": "xls",
-                              "mColumns": [0, 1, 2, 3],
-                              "sPdfOrientation": "landscape"
-                          }, {
-                              "sExtends": "csv",
-                              "mColumns": [0, 1, 2, 3],
-                              "sPdfOrientation": "landscape"
-                          }
-                      ]
-                  }
+                  ]
+                  // "oTableTools": {
+                  //     "sSwfPath": "global/plugins/datatables/swf/copy_csv_xls_pdf.swf",
+                  //     "aButtons": [
+                  //         {
+                  //             "sExtends": "pdf",
+                  //             "mColumns": [0, 1, 2, 3],
+                  //             "sPdfOrientation": "landscape"
+                  //         },
+                  //         {
+                  //             "sExtends": "print",
+                  //             "mColumns": [0, 1, 2, 3],
+                  //             "sPdfOrientation": "landscape"
+                  //         }, {
+                  //             "sExtends": "xls",
+                  //             "mColumns": [0, 1, 2, 3],
+                  //             "sPdfOrientation": "landscape"
+                  //         }, {
+                  //             "sExtends": "csv",
+                  //             "mColumns": [0, 1, 2, 3],
+                  //             "sPdfOrientation": "landscape"
+                  //         }
+                  //     ]
+                  // }
               });
 
               jQuery('#table-edit_wrapper .dataTables_filter input').addClass("form-control medium"); // modify table search input
@@ -283,7 +284,7 @@ angular.module('newApp')
       //         option +
       //         '</select>';
 
-              $('.dataTables_filter input').attr("placeholder", "Search a user...");
+              $('.dataTables_filter input').attr("placeholder", "Search a product...");
 
           };
 

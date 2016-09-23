@@ -109,7 +109,7 @@ public class AjaxController {
         String name = request.getParameter("name");
         String price = request.getParameter("price");
         String description = request.getParameter("description");
-        String categoryId = request.getParameter("txtCategoryID");
+        String categoryId = request.getParameter("categoryId");
         int idInt = Integer.parseInt(id);
         Category category = categoryDAO.getCategoryById(Integer.parseInt(categoryId));
         if (category != null) {

@@ -75,6 +75,12 @@ angular.module('newApp').factory('chartService', function () {
             { value: 50, color: "rgba(27, 184, 152,0.9)", highlight: "rgba(27, 184, 152,1)", label: "Green" },
             { value: 120, color: "rgba(97, 103, 116,0.9)", highlight: "rgba(97, 103, 116,1)", label: "Dark Grey" }
         ];
+
+        var ctx = document.getElementById("pie-chart").getContext("2d");
+        window.myPie = new Chart(ctx).Pie(pieData, {
+            tooltipCornerRadius: 0
+        });
+
         var pieData2 = [
             { value: 80, color: "rgba(27, 184, 152,0.9)", highlight: "rgba(27, 184, 152,1)", label: "Green" },
             { value: 120, color: "rgba(255, 200, 112,0.9)", highlight: "rgba(255, 200, 112,1)", label: "Yellow" },
@@ -82,11 +88,6 @@ angular.module('newApp').factory('chartService', function () {
             { value: 60, color: "rgba(201, 98, 95,0.9)", highlight: "rgba(201, 98, 95,1)", label: "Red" },
             { value: 60, color: "rgba(97, 103, 116,0.9)", highlight: "rgba(97, 103, 116,1)", label: "Dark Grey" }
         ];
-        var ctx = document.getElementById("pie-chart").getContext("2d");
-        window.myPie = new Chart(ctx).Pie(pieData, {
-            tooltipCornerRadius: 0
-        });
-
         var ctx2 = document.getElementById("pie-chart2").getContext("2d");
         window.myPie = new Chart(ctx2).Pie(pieData2, {
             tooltipCornerRadius: 0

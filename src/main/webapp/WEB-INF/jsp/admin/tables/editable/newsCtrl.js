@@ -10,7 +10,7 @@ angular.module('newApp')
         $scope.categories = [];
         $scope.staffs = [];
 
-
+        $scope.csrf_token = $('meta[name="csrf-token"]').attr('content');
 
         $scope.$on('$viewContentLoaded', function () {
             var promise =
@@ -116,12 +116,23 @@ angular.module('newApp')
 
                 var oTable = $('#table-news').dataTable({
                     "bDestroy": true,
-                    "scrollX": true,
+                    "bSort": true,
+                    // "bPaginate": true,
+                    // "bInfo" : true,
+                    // "searching" : true,
+                    "bScrollCollapse": true,
+                    "searchable" : true,
+                    // "bServerSide": true,
+                    "processing" : true,
+                    "serverSide": true,
+                    // "scrollX": true,
+                    "iDisplayLength" : 5,
                     "aLengthMenu": [
-                        [10, 15, 20, -1],
-                        [10, 15, 20, "All"] // change per page values here
+                        [5, 10, 15, -1],
+                        [5, 10, 15, "All"] // change per page values here
                     ],
-                    "sDom": "<'row'<'col-md-6 filter-left'l><'col-md-6'T>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+                    // "sDom": "<'row'<'col-md-6 filter-left'l><'col-md-6'T>r>t<'row'<'col-md-6'i><'col-md-6'p>>",
+                    // "sAjaxSource" : "./getNews",
                     "ajax" : {
                         "url": "./getNews",
                         "dataSrc": ""
@@ -166,36 +177,36 @@ angular.module('newApp')
                             // }
                         }
                     ],
-                    "oTableTools": {
-                        "sSwfPath": "global/plugins/datatables/swf/copy_csv_xls_pdf.swf",
-                        "aButtons": [
-                            {
-                                "sExtends": "pdf",
-                                "mColumns": [0, 1, 2, 3],
-                                "sPdfOrientation": "landscape"
-                            },
-                            {
-                                "sExtends": "print",
-                                "mColumns": [0, 1, 2, 3],
-                                "sPdfOrientation": "landscape"
-                            }, {
-                                "sExtends": "xls",
-                                "mColumns": [0, 1, 2, 3],
-                                "sPdfOrientation": "landscape"
-                            }, {
-                                "sExtends": "csv",
-                                "mColumns": [0, 1, 2, 3],
-                                "sPdfOrientation": "landscape"
-                            }
-                        ]
-                    },
+                    // "oTableTools": {
+                    //     "sSwfPath": "global/plugins/datatables/swf/copy_csv_xls_pdf.swf",
+                    //     "aButtons": [
+                    //         {
+                    //             "sExtends": "pdf",
+                    //             "mColumns": [0, 1, 2, 3],
+                    //             "sPdfOrientation": "landscape"
+                    //         },
+                    //         {
+                    //             "sExtends": "print",
+                    //             "mColumns": [0, 1, 2, 3],
+                    //             "sPdfOrientation": "landscape"
+                    //         }, {
+                    //             "sExtends": "xls",
+                    //             "mColumns": [0, 1, 2, 3],
+                    //             "sPdfOrientation": "landscape"
+                    //         }, {
+                    //             "sExtends": "csv",
+                    //             "mColumns": [0, 1, 2, 3],
+                    //             "sPdfOrientation": "landscape"
+                    //         }
+                    //     ]
+                    // },
                     "initComplete": function(settings, json) {
 
                     }
                 });
 
-                jQuery('#table-edit_wrapper .dataTables_filter input').addClass("form-control medium"); // modify table search input
-                jQuery('#table-edit_wrapper .dataTables_length select').addClass("form-control xsmall"); // modify table per page dropdown
+                jQuery('#table-news_wrapper .dataTables_filter input').addClass("form-control medium"); // modify table search input
+                jQuery('#table-news_wrapper .dataTables_length select').addClass("form-control xsmall"); // modify table per page dropdown
 
                 var nEditing = null;
 
@@ -264,7 +275,10 @@ angular.module('newApp')
                         method: 'POST',
                         url: './addNews',
                         data: $.param(updatedValues),
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                            'X-XSRF-TOKEN' : $scope.csrf_token,
+                            'XSRF-TOKEN' : $scope.csrf_token
+                        }
                     }).success(function (data, status, headers, config) {
                         addRow(oTable, nEditing);
                         nEditing = null;
@@ -288,7 +302,10 @@ angular.module('newApp')
                             data: $.param({
                                 id: aData[columns[0]]
                             }),
-                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                                'X-XSRF-TOKEN' : $scope.csrf_token,
+                                'XSRF-TOKEN' : $scope.csrf_token
+                            }
                         }).success(function (data, status, headers, config) {
                             oTable.fnDeleteRow(nRow);
                         });
@@ -312,14 +329,14 @@ angular.module('newApp')
                     e.preventDefault();
                     /* Get the row as a parent of the link that was clicked on */
                     var nRow = $(this).parents('tr')[0];
-
+                    $('#table-news_wrapper').css("overflow-y", "auto");
                     if (nEditing !== null && nEditing != nRow) {
                         restoreRow(oTable, nEditing);
                         editRow(oTable, nRow);
                         nEditing = nRow;
                     } else if (nEditing == nRow && this.innerHTML == "Save") {
                         /* This row is being edited and should be saved */
-
+                        $('#table-news_wrapper').css("overflow-y", "hidden");
                         // alert("Updated! Do not forget to do some ajax to sync with backend :)");
                         var jqInputs = $('input', nRow);
                         var updatedValues = {};
@@ -330,11 +347,16 @@ angular.module('newApp')
                         updatedValues['staffId'] = selects[0].value;
                         updatedValues['categoryId'] = selects[1].value;
                         console.log(updatedValues);
+
+                        // var csrf_token = $('meta[name="csrf-token"]').attr('content');
                         $http({
                             method: 'POST',
                             url: './updateNews',
                             data: $.param(updatedValues),
-                            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                            headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                                      'X-XSRF-TOKEN' : $scope.csrf_token,
+                                      'XSRF-TOKEN' : $scope.csrf_token
+                                     }
                         }).success(function (data, status, headers, config) {
                             saveRow(oTable, nEditing);
                             nEditing = null;
@@ -345,17 +367,7 @@ angular.module('newApp')
                         nEditing = nRow;
                     }
                 });
-
-                // function () {
-                //     var option = "";
-                //     for (var i = 0; i < $scope.categories.length; i++) {
-                //         option += '<option value="'+ $scope.categories[i]['categoryId'] +'">' + $scope.categories[i]['name']  +'</option>';
-                //     }
-                //     return '<select name="txtCategoryID">' +
-                //         option +
-                //         '</select>';
-
-                $('.dataTables_filter input').attr("placeholder", "Search a user...");
+                $('.dataTables_filter input').attr("placeholder", "Search a news...");
 
             };
 

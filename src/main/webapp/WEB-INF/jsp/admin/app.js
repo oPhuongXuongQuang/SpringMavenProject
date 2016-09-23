@@ -18,7 +18,9 @@ var MakeApp = angular
     'ngTouch',
     'ui.bootstrap'
   ])
-  .config(function ($routeProvider) {
+  .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+      $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
       $routeProvider
         // .when('/', {
         //     // templateUrl: 'dashboard/dashboard.html',
@@ -27,9 +29,13 @@ var MakeApp = angular
         //     controller: 'editableCtrl'
         // })
           .when('/', {
-                  templateUrl: 'pages/blank/blank.html',
-                  controller: 'blankCtrl'
-              })
+              templateUrl: 'charts/charts/charts.html',
+              controller: 'chartsCtrl'
+          })
+          // .when('/', {
+          //         templateUrl: 'pages/blank/blank.html',
+          //         controller: 'blankCtrl'
+          //     })
           .when('/product', {
               templateUrl: 'tables/editable/editable.html',
               controller: 'editableCtrl'
@@ -233,7 +239,7 @@ var MakeApp = angular
         // .otherwise({
         //     redirectTo: '/'
         // });
-  });
+  }]);
 
 
 // Route State Load Spinner(used on page or content load)

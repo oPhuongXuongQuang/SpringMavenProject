@@ -2002,7 +2002,7 @@ $(function() {
             left: $('body').hasClass('rtl') ? 'auto' : 20,
             right: $('body').hasClass('rtl') ? 20 : 'auto'
         }
-        return chartData;
+        return chartCateData;
     }
 
     // build map
