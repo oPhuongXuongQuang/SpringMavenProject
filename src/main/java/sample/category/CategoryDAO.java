@@ -10,6 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,23 +24,23 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class CategoryDAO {
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    SessionFactory sessionFactory;
 
     @Transactional
     public boolean checkExist(int id) {
-        return em.find(Category.class, id) != null;
+        return sessionFactory.getCurrentSession().find(Category.class, id) != null;
 
     }
 
     @Transactional
     public void persist(Object object) {
-        em.persist(object);
+        sessionFactory.getCurrentSession().persist(object);
     }
 
     @Transactional
     public List<Category> getAllCategory() {
-        Query query = em.createNamedQuery("Category.findAll");
+        Query query = sessionFactory.getCurrentSession().createNamedQuery("Category.findAll");
         List<Category> list = query.getResultList();
         return list;
     }
@@ -44,7 +48,7 @@ public class CategoryDAO {
     @Transactional
     public Category getCategoryById(Integer id) {
         try {
-            Category category = (Category) em.find(Category.class, id);
+            Category category = (Category) sessionFactory.getCurrentSession().find(Category.class, id);
             return category;
         } catch (NoResultException ex) {
             return null;
@@ -53,16 +57,18 @@ public class CategoryDAO {
 
     @Transactional
     public void delete(int id) {
-        Category category = (Category) em.find(Category.class, id);
-        em.remove(category);
-        em.flush();
+        Session session = sessionFactory.getCurrentSession();
+        Category category = (Category) session.find(Category.class, id);
+        session.remove(category);
+        session.flush();
     }
 
     @Transactional
     public void update(Category category) {
-        Category std = (Category) em.find(Category.class, category.getCategoryId());
+        Session session = sessionFactory.getCurrentSession();
+        Category std = (Category) session.find(Category.class, category.getCategoryId());
         std.setCategoryId(category.getCategoryId());
         std.setName(category.getName());
-        em.merge(std);
+        session.merge(std);
     }
 }

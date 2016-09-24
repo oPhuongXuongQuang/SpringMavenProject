@@ -25,12 +25,29 @@
     </beans:bean>
     <!-- Resolves views selected for rendering by @Controllers to .jsp resources
     in the /WEB-INF/views directory -->
-    <beans:bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <beans:property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" />
+    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <beans:property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+        <beans:property name="url" value="jdbc:jtds:sqlserver://myserversecn9.database.windows.net:1433/QUANGPX" />
+        <beans:property name="username" value="secn999@myserversecn9"/>
+        <beans:property name="password" value="Huesoft?123" />
     </beans:bean>
 
-    <beans:bean id="trans" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <beans:property name="entityManagerFactory" ref="emf" />
+    <!--<beans:bean id="pro" class="java.util.Properties">-->
+        <!--<beans:property name="" value="org.hibernate.dialect.SQLServerDialect" />-->
+    <!--</beans:bean>-->
+
+    <beans:bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <beans:property name="dataSource" ref="dataSource" />
+        <beans:property name="annotatedPackages" value="sample" />
+        <beans:property name="hibernateProperties">
+            <beans:props>
+                <beans:prop key="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</beans:prop>
+            </beans:props>
+        </beans:property>
+        </beans:bean>
+
+    <beans:bean id="trans" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <beans:property name="sessionFactory" ref="sessionFactory" />
     </beans:bean>
 
     <tx:annotation-driven transaction-manager="trans" />

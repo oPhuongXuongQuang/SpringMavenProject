@@ -10,6 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import sample.category.Category;
@@ -20,25 +24,24 @@ import sample.category.Category;
  */
 @Component
 public class ProductDAO {
-
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    SessionFactory sessionFactory;
 
     @Transactional
     public boolean checkExist(int id) {
-        return em.find(Product.class, id) != null;
+        return sessionFactory.getCurrentSession().find(Product.class, id) != null;
     }
 
     @Transactional
     public void persist(Object object) {
-        em.persist(object);
+        sessionFactory.getCurrentSession().persist(object);
 
     }
 
     @Transactional
     public Product getProductById(Integer id) {
         try {
-            Product product = (Product) em.find(Product.class, id);
+            Product product = sessionFactory.getCurrentSession().find(Product.class, id);
             return product;
         } catch (NoResultException ex) {
             return null;
@@ -47,20 +50,22 @@ public class ProductDAO {
     
     @Transactional
     public List<Product> getAllProduct() {
-        Query query = em.createNamedQuery("Product.findAll");
+        Query query = sessionFactory.getCurrentSession().createNamedQuery("Product.findAll");
         List<Product> list = query.getResultList();
         return list;
     }
 
     @Transactional
     public void delete(int id) {
-        Product product = (Product) em.find(Product.class, id);
-        em.remove(product);
+        Session session = sessionFactory.getCurrentSession();
+        Product product = (Product) session.find(Product.class, id);
+        session.remove(product);
+        session.flush();
     }
 
     @Transactional
     public void update(Product product) {
-        Product std = (Product) em.find(Product.class, product.getProductId());
+        Product std = (Product) sessionFactory.getCurrentSession().find(Product.class, product.getProductId());
         std.setName(product.getName());
         std.setDescription(product.getDescription());
         std.setPrice(product.getPrice());
@@ -72,7 +77,7 @@ public class ProductDAO {
 
     @Transactional
     public List<Product> getProductByCategoryId(Integer categoryId) {
-        Query query = em.createNamedQuery("Product.findByCategoryId");
+        Query query = sessionFactory.getCurrentSession().createNamedQuery("Product.findByCategoryId");
         query.setParameter("categoryId", categoryId);
         List<Product> list = query.getResultList();
         return list;
@@ -80,11 +85,11 @@ public class ProductDAO {
 
     @Transactional
     public void updateCategory(Integer categoryId) {
-        Category cate = (Category) em.find(Category.class, categoryId);
+        Session session = sessionFactory.getCurrentSession();
+        Category cate = (Category) session.find(Category.class, categoryId);
         List<Product> products = getProductByCategoryId(categoryId);
         cate.setProductList(products);
-        em.merge(cate);
-        em.flush();
+        session.merge(cate);
     }
     
 }
